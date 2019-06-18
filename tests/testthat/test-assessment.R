@@ -91,20 +91,20 @@ test_that("All Subgroups", {
 
 test_that("Matching", {
 
-    difference_df_state <- state_assessment %>%
-        setdiff(state_assessment_am) %>%
-        bind_rows(setdiff(state_assessment_am, state_assessment)) %>%
+    difference_df_state <- (state_assessment %>% select(year:n_mastered)) %>%
+        setdiff(state_assessment_am %>% select(year:n_mastered)) %>%
+        bind_rows(setdiff(state_assessment_am %>% select(year:n_mastered), state_assessment %>% select(year:n_mastered))) %>%
         arrange(system, test, subject, grade, subgroup, -year)
 
-    difference_df_district <- district_assessment %>%
-        setdiff(district_assessment_am) %>%
-        bind_rows(setdiff(district_assessment_am, district_assessment)) %>%
+    difference_df_district <- (district_assessment %>% select(year:n_mastered)) %>%
+        setdiff(district_assessment_am %>% select(year:n_mastered)) %>%
+        bind_rows(setdiff(district_assessment_am %>% select(year:n_mastered), district_assessment %>% select(year:n_mastered))) %>%
         arrange(system, test, subject, grade, subgroup, -year)
 
-    difference_df_school <- school_assessment %>%
-        setdiff(school_assessment_am) %>%
-        bind_rows(setdiff(school_assessment_am, school_assessment)) %>%
-        arrange(system, test, subject, grade, subgroup, -year)
+    difference_df_school <- (school_assessment %>% select(year:n_mastered)) %>%
+        setdiff(school_assessment_am %>% select(year:n_mastered)) %>%
+        bind_rows(setdiff(school_assessment_am %>% select(year:n_mastered), school_assessment %>% select(year:n_mastered))) %>%
+        arrange(system, school, test, subject, grade, subgroup, -year)
 
     expect_equal(nrow(difference_df_state), 0)
     expect_equal(nrow(difference_df_district), 0)
