@@ -8,6 +8,10 @@ school_assessment <- read_csv("N:/ORP_accountability/data/2019_final_accountabil
 district_assessment <- read_csv("N:/ORP_accountability/data/2019_final_accountability_files/district_assessment_file.csv")
 state_assessment <- read_csv("N:/ORP_accountability/data/2019_final_accountability_files/state_assessment_file.csv")
 
+school_assessment_am <- read_csv("N:/ORP_accountability/data/2019_final_accountability_files/school_assessment_file_AM.csv")
+district_assessment_am <- read_csv("N:/ORP_accountability/data/2019_final_accountability_files/district_assessment_file_AM.csv")
+state_assessment_am <- read_csv("N:/ORP_accountability/data/2019_final_accountability_files/state_assessment_file_AM.csv")
+
 test_that("Check Uniqueness", {
     expect_true(
         nrow(school_assessment) == nrow(distinct(school_assessment, year, system, school, test, subject, grade, subgroup)),
@@ -84,3 +88,28 @@ test_that("All Subgroups", {
     expect_setequal(unique(school_assessment$subgroup), subgroups)
 
 })
+
+test_that("Matching", {
+
+    difference_df_state <- (state_assessment %>% select(year:n_mastered)) %>%
+        setdiff(state_assessment_am %>% select(year:n_mastered)) %>%
+        bind_rows(setdiff(state_assessment_am %>% select(year:n_mastered), state_assessment %>% select(year:n_mastered))) %>%
+        arrange(system, test, subject, grade, subgroup, -year)
+
+    difference_df_district <- (district_assessment %>% select(year:n_mastered)) %>%
+        setdiff(district_assessment_am %>% select(year:n_mastered)) %>%
+        bind_rows(setdiff(district_assessment_am %>% select(year:n_mastered), district_assessment %>% select(year:n_mastered))) %>%
+        arrange(system, test, subject, grade, subgroup, -year)
+
+    difference_df_school <- (school_assessment %>% select(year:n_mastered)) %>%
+        setdiff(school_assessment_am %>% select(year:n_mastered)) %>%
+        bind_rows(setdiff(school_assessment_am %>% select(year:n_mastered), school_assessment %>% select(year:n_mastered))) %>%
+        arrange(system, school, test, subject, grade, subgroup, -year)
+
+    expect_equal(nrow(difference_df_state), 0)
+    expect_equal(nrow(difference_df_district), 0)
+    expect_equal(nrow(difference_df_school), 0)
+
+})
+
+
