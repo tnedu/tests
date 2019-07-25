@@ -5,7 +5,7 @@ library(dplyr)
 library(purrr)
 
 student <- read_csv("N:/ORP_accountability/projects/2019_student_level_file/2019_student_level_file.csv")
-student_am <- read_csv("N:/ORP_accountability/projects/2019_student_level_file/2019_student_level_file_AM.csv")
+student_am <- read_csv("N:/ORP_accountability/projects/2019_student_level_file/2019_student_level_AM.csv")
 
 test_that("Check Uniqueness", {
     expect_equal(nrow(student), nrow(distinct(student, state_student_id, original_subject, test)))
@@ -38,11 +38,11 @@ test_that("All Subjects", {
 
 test_that("Matching", {
 
-    difference_df_student <- setdiff( student, student_am) %>%
+    difference_df_student <- setdiff( student , student_am) %>% #  %>% select(-percentile)
         bind_rows(setdiff(student_am, student)) %>%
         arrange(system, school, state_student_id, original_subject)
 
-    expect_equal(nrow(difference_df_state), 0)
+    expect_equal(nrow(difference_df_student), 0)
 })
 
 
