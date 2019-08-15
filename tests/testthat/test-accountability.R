@@ -5,9 +5,12 @@ library(dplyr)
 library(purrr)
 
 school_accountability <- read_csv("N:/ORP_accountability/data/2019_final_accountability_files/school_accountability_file.csv")
+school_accountability_new <- read_csv("N:/ORP_accountability/data/2019_final_accountability_files/school_accountability_file_aug14.csv")
 district_accountability <- read_csv("N:/ORP_accountability/data/2019_final_accountability_files/district_accountability_file.csv")
 
+
 school_accountability_am <- read_csv("N:/ORP_accountability/data/2019_final_accountability_files/school_accountability_file_AM.csv")
+school_accountability_am_new <- read_csv("N:/ORP_accountability/data/2019_final_accountability_files/school_accountability_file_AM_Aug14_stitched.csv")
 district_accountability_am <- read_csv("N:/ORP_accountability/data/2019_final_accountability_files/district_accountability_file_AM.csv")
 
 test_that("Check Uniqueness", {
@@ -55,6 +58,10 @@ test_that("Matching", {
     difference_df_district <- setdiff( district_accountability , district_accountability_am) %>% #  %>% select(-percentile)
         bind_rows(setdiff(district_accountability_am, district_accountability)) %>%
         arrange(system, indicator, grade, subgroup)
+
+    difference_df_school_new <- setdiff( school_accountability_new , school_accountability_am_new) %>% #  %>% select(-percentile)
+        bind_rows(setdiff(school_accountability_am_new, school_accountability_new)) %>%
+        arrange(system, school, subgroup, indicator)
 
     expect_equal(nrow(difference_df_school), 0)
     expect_equal(nrow(difference_df_district), 0)
