@@ -13,8 +13,8 @@ school_grading_metrics_am <- read_csv("N:/ORP_accountability/projects/2019_schoo
     select(system:subgroup, score_achievement, score_growth, score_grad, score_ready_grad, score_absenteeism,
            score_elpa, subgroup_average,  - pool, - designation_ineligible) # total_weight, subgroup_average,
 
-school_grading_grades_ap <- read_csv("N:/ORP_accountability/projects/2019_school_accountability/school_grading_grades.csv")
-school_grading_grades_am <- read_csv("N:/ORP_accountability/projects/2019_school_accountability/school_grading_grades_AM.csv")
+school_grading_grades_ap <- read_csv("N:/ORP_accountability/projects/2019_school_accountability/school_grading_grades_aug14.csv")
+school_grading_grades_am <- read_csv("N:/ORP_accountability/projects/2019_school_accountability/school_grading_grades_AM_Aug14_stitched.csv")
 school_grading_grades_am_aug14 <- read_csv("N:/ORP_accountability/projects/2019_school_accountability/school_grading_grades_AM.csv")
 
 test_that("Matching Metrics", {
@@ -29,12 +29,12 @@ test_that("Matching Metrics", {
 
 # test_that("Matching Grades", {
 #
-#     diff_df_metrics <- setdiff(school_grading_metrics_ap, school_grading_metrics_am) %>% #  %>% select(-total_weight, -subgroup_average)
+#     diff_df_grades <- setdiff(school_grading_metrics_ap, school_grading_metrics_am) %>% #  %>% select(-total_weight, -subgroup_average)
 #         bind_rows(setdiff(school_grading_metrics_am, school_grading_metrics_ap)) %>%
 #         #filter(is.na(pool), designation_ineligible == 0) %>%
 #         arrange(system, school, subgroup)
 #
-#     expect_equal(nrow(diff_df_metrics), 0)
+#     expect_equal(nrow(diff_df_grades), 0)
 # })
 
 
